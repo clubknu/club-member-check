@@ -66,7 +66,7 @@ else:
 
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. UI 스타일 및 완벽 정중앙 버튼 정렬 CSS
+# 4. UI 스타일 및 간격 균일화 CSS
 st.markdown(
     """
 <style>
@@ -114,7 +114,7 @@ st.markdown(
         font-size: 2.2rem;
         font-weight: 800;
         color: #000000 !important;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
         letter-spacing: -0.5px;
     }
 
@@ -146,7 +146,16 @@ st.markdown(
         -webkit-text-fill-color: #555555 !important;
     }
 
-    /* 📌 파란색 조회하기 버튼 커스텀 스타일링 */
+    /* 📌 컬럼 및 버튼 영역 상단 여백 최소화 */
+    [data-testid="stHorizontalBlock"] {
+        margin-top: 0.8rem !important;
+    }
+
+    div[data-testid="stFormSubmitButton"] {
+        margin-top: 0px !important;
+    }
+
+    /* 파란색 조회하기 버튼 커스텀 스타일링 */
     div[data-testid="stFormSubmitButton"] button {
         background-color: #007bff !important;
         color: #ffffff !important;
@@ -166,14 +175,14 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* 결과 및 경고 메시지 텍스트 디자인 (검은색 + 중앙 정렬) */
+    /* 📌 결과 및 경고 메시지 상단 간격 축소 (버튼과의 간격을 동일하게 조정) */
     .result-box {
         text-align: center !important;
-        margin-top: 1.8rem;
-        font-size: 1.25rem;
+        margin-top: 0.9rem !important;
+        font-size: 1.2rem;
         font-weight: 700;
         color: #000000 !important;
-        line-height: 1.5;
+        line-height: 1.4;
         width: 100% !important;
     }
 </style>
@@ -238,7 +247,7 @@ with st.form("student_search_form", clear_on_submit=False):
                 "학번", placeholder="학번 입력", label_visibility="collapsed"
             )
 
-            # 📌 3. 좌/우에 동일한 여백 컬럼을 두고, 가운데 컬럼(btn_col)에 버튼을 넣고 use_container_width=True 부여
+            # 3. 중앙 정렬 버튼 배치
             _, btn_col, _ = st.columns([1, 1.2, 1])
             with btn_col:
                 search_btn = st.form_submit_button("조회하기", use_container_width=True)
