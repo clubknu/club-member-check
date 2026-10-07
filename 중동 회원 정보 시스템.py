@@ -42,6 +42,7 @@ if os.path.exists(bg_image_path):
         background-attachment: fixed !important;
         background-color: #ffffff !important;
         
+        /* 화면 세로 중앙 정렬 */
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -87,15 +88,17 @@ st.markdown(
 
     /* 반투명 팝업 카드 설정 */
     [data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.75) !important;
-        backdrop-filter: blur(4px) !important;
-        -webkit-backdrop-filter: blur(4px) !important;
-        border-radius: 24px !important;
+        background: rgba(255, 255, 255, 0.7) !important;  /* 반투명 흰색 */
+        backdrop-filter: blur(1px) !important;             /* 배경 투과 */
+        -webkit-backdrop-filter: blur(8px) !important;
+        border-radius: 24px !important;                     /* 모서리 둥글게 */
         padding: 2.5rem 2.2rem 2.2rem 2.2rem !important;
         
+        /* 입체적 팝업 그림자 & 테두리 */
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
         border: 1px solid rgba(255, 255, 255, 0.9) !important;
 
+        /* 카드 내부 중앙 정렬 */
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
@@ -111,64 +114,50 @@ st.markdown(
         text-align: center;
         font-size: 2.2rem;
         font-weight: 800;
-        color: #000000 !important;
+        color: #000000;
         margin-bottom: 2rem;
         letter-spacing: -0.5px;
     }
 
-    /* 입력창 강력 흰색 배경 & 검은색 글자 적용 */
-    div[data-baseweb="input"], 
-    div[data-baseweb="base-input"],
-    div[data-testid="stTextInput"] > div > div {
+    /* 입력창 디자인 (하얀색 배경 + 검은색 글자 + 중앙 정렬) */
+    div[data-baseweb="input"] {
         background-color: #ffffff !important;
-        border-radius: 6px !important;
+        border-radius: 4px !important;
         border: 1px solid #8e8e8e !important;
     }
-
-    div[data-baseweb="input"] input,
-    div[data-baseweb="base-input"] input,
-    div[data-testid="stTextInput"] input {
-        color: #000000 !important;
-        background-color: #ffffff !important;
+    div[data-baseweb="input"] input {
+        color: #000000 !important;             /* 검은색 글자 */
+        background-color: #ffffff !important;  /* 하얀색 배경 */
         font-size: 1.05rem !important;
         padding: 10px 12px !important;
+        text-align: center !important;         /* 텍스트 중앙 정렬 */
+    }
+    div[data-baseweb="input"] input::placeholder {
+        color: #000000 !important;             /* Placeholder 검은색 */
+        opacity: 0.6 !important;
         text-align: center !important;
-        -webkit-text-fill-color: #000000 !important; /* Safari/Chrome 글자색 강제 고정 */
     }
 
-    div[data-baseweb="input"] input::placeholder,
-    div[data-testid="stTextInput"] input::placeholder {
-        color: #555555 !important;
-        opacity: 0.8 !important;
-        text-align: center !important;
-        -webkit-text-fill-color: #555555 !important;
-    }
-
-    /* 버튼 완전 중앙 정렬 및 크기(35%) 설정 */
+    /* 파란색 버튼 디자인 (입력 칸의 1/3 크기 및 중앙 정렬) */
     div[data-testid="stFormSubmitButton"] {
         display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
+        justify-content: center !important;    /* 버튼 중앙 정렬 */
         width: 100% !important;
-        margin-top: 1rem !important;
     }
-    
     div[data-testid="stFormSubmitButton"] > button {
-        width: 35% !important;
+        width: 35% !important;                 /* 입력 칸 너비의 약 1/3 크기 */
         min-width: 120px !important;
-        margin: 0 auto !important; /* 중앙 배치 */
-        display: block !important;
         background-color: #007bff !important;
         color: #ffffff !important;
         border: none !important;
         padding: 0.65rem 0 !important;
         font-size: 1.05rem !important;
         font-weight: 600 !important;
-        border-radius: 6px !important;
+        border-radius: 4px !important;
+        margin-top: 0.5rem !important;
         box-shadow: none !important;
         text-align: center !important;
     }
-
     div[data-testid="stFormSubmitButton"] > button:hover {
         background-color: #0056b3 !important;
         color: #ffffff !important;
@@ -180,7 +169,7 @@ st.markdown(
         margin-top: 1.8rem;
         font-size: 1.25rem;
         font-weight: 700;
-        color: #000000 !important;
+        color: #000000 !important;             /* 검은색 글씨 */
         line-height: 1.5;
         width: 100% !important;
     }
@@ -247,7 +236,7 @@ with st.form("student_search_form", clear_on_submit=False):
 
             # 조회 로직 및 결과 출력
             if search_btn:
-                # 입력값이 비어있을 때
+                # 입력값이 비어있을 때 (노란창 대신 검은색 텍스트 중앙 정렬)
                 if not student_id.strip() or not name.strip():
                     st.markdown(
                         """
