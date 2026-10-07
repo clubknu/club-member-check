@@ -6,7 +6,7 @@ import streamlit as st
 
 # 1. 페이지 기본 설정
 st.set_page_config(
-    page_title="학생 정보 조회",
+    page_title="중앙동아리 회원 정보 조회",
     page_icon="🎓",
     layout="centered",
     initial_sidebar_state="collapsed",
@@ -41,6 +41,12 @@ if os.path.exists(bg_image_path):
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
         background-color: #ffffff !important;
+        
+        /* 화면 세로 중앙 정렬을 위한 설정 */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 100vh !important;
     }}
     </style>
     """
@@ -50,12 +56,18 @@ else:
     html, body, .stApp {
         background-color: #ffffff !important;
     }
+    [data-testid="stMain"] {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        min-height: 100vh !important;
+    }
     </style>
     """
 
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. 이미지 맞춤형 팝업 카드 및 UI 스타일 CSS
+# 4. 이미지 맞춤형 팝업 카드 및 정중앙 정렬 UI 스타일 CSS
 st.markdown(
     """
 <style>
@@ -65,11 +77,13 @@ st.markdown(
         height: 0px !important;
     }
 
-    /* 중앙 배치 영역 너비 지정 */
+    /* 중앙 배치 컨테이너 크기 및 마진 설정 */
     .main .block-container {
         max-width: 480px !important;
-        padding-top: 5rem !important;
-        padding-bottom: 3rem !important;
+        width: 100% !important;
+        padding-top: 2rem !important;
+        padding-bottom: 2rem !important;
+        margin: auto !important;
     }
 
     /* 이미지 스타일의 반투명 팝업 카드 */
@@ -83,6 +97,17 @@ st.markdown(
         /* 입체적인 팝업 카드 그림자 & 깔끔한 테두리 */
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
         border: 1px solid rgba(255, 255, 255, 0.9) !important;
+
+        /* 카드 내부 요소 중앙 정렬 */
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* 카드 내부 모든 블록 요소 중앙 정렬 */
+    [data-testid="stForm"] > div {
+        width: 100% !important;
     }
 
     /* 타이틀 디자인 */
@@ -95,7 +120,7 @@ st.markdown(
         letter-spacing: -0.5px;
     }
 
-    /* 입력창 디자인 (회색 테두리와 깔끔한 내부 padding) */
+    /* 입력창 디자인 (가운데 정렬 포함) */
     div[data-baseweb="input"] {
         background-color: #ffffff !important;
         border-radius: 4px !important;
@@ -106,12 +131,18 @@ st.markdown(
         background-color: #ffffff !important;
         font-size: 1.05rem !important;
         padding: 10px 12px !important;
+        text-align: center !important; /* 입력 텍스트 중앙 정렬 */
     }
     div[data-baseweb="input"] input::placeholder {
         color: #757575 !important;
+        text-align: center !important; /* Placeholder 중앙 정렬 */
     }
 
     /* 원색 파란색 직사각형 버튼 디자인 */
+    div[data-testid="stFormSubmitButton"] {
+        display: flex !important;
+        justify-content: center !important;
+    }
     div[data-testid="stFormSubmitButton"] > button {
         width: 100% !important;
         background-color: #007bff !important;
@@ -123,20 +154,22 @@ st.markdown(
         border-radius: 4px !important;
         margin-top: 0.3rem !important;
         box-shadow: none !important;
+        text-align: center !important;
     }
     div[data-testid="stFormSubmitButton"] > button:hover {
         background-color: #0056b3 !important;
         color: #ffffff !important;
     }
 
-    /* 결과 텍스트 디자인 (이미지상의 배치와 동일하게) */
+    /* 결과 텍스트 디자인 (중앙 정렬) */
     .result-box {
-        text-align: center;
+        text-align: center !important;
         margin-top: 1.8rem;
         font-size: 1.25rem;
         font-weight: 700;
         color: #000000;
         line-height: 1.5;
+        width: 100% !important;
     }
 </style>
 """,
@@ -212,7 +245,7 @@ with st.form("student_search_form", clear_on_submit=False):
                         st.markdown(
                             f"""
                         <div class="result-box">
-                            {name.strip()}님은 중앙동아리회원입니다. 결과: 중앙동아리회원
+                            {name.strip()}님은 중앙동아리 회원입니다.
                         </div>
                         """,
                             unsafe_allow_html=True,
