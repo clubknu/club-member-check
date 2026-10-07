@@ -146,27 +146,19 @@ st.markdown(
         -webkit-text-fill-color: #555555 !important;
     }
 
-    /* 📌 버튼 영역 전체 중앙 정렬 제어 */
+    /* 📌 실제 Streamlit Submit 버튼 전체를 100% 폭으로 만든 뒤 내용물을 중앙 정렬 */
     div[data-testid="stFormSubmitButton"] {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
+        display: block !important;
         width: 100% !important;
+        text-align: center !important;
         margin-top: 1rem !important;
     }
 
-    div[data-testid="stFormSubmitButton"] > div {
-        display: flex !important;
-        justify-content: center !important;
-        width: 100% !important;
-    }
-    
-    div[data-testid="stFormSubmitButton"] button {
-        width: 35% !important;                 /* 입력창 너비 대비 35% 비율 */
-        min-width: 130px !important;           /* 최소 너비 */
-        margin-left: auto !important;          /* 좌우 마진 auto로 강제 중앙 */
-        margin-right: auto !important;
-        display: block !important;
+    div[data-testid="stFormSubmitButton"] > button {
+        display: inline-block !important;
+        width: 38% !important;
+        min-width: 120px !important;
+        margin: 0 auto !important;
         background-color: #007bff !important;
         color: #ffffff !important;
         border: none !important;
@@ -179,7 +171,7 @@ st.markdown(
         cursor: pointer !important;
     }
 
-    div[data-testid="stFormSubmitButton"] button:hover {
+    div[data-testid="stFormSubmitButton"] > button:hover {
         background-color: #0056b3 !important;
         color: #ffffff !important;
     }
