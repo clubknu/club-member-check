@@ -74,8 +74,8 @@ st.markdown(
 
     /* 폼(st.form) 자체를 반투명 카드 팝업으로 변경 */
     [data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.38) !important; /* 반투명 흰색 */
-        backdrop-filter: blur(12px) !important;            /* 뒤 배경 흐림 효과 */
+        background: rgba(255, 255, 255, 0.25) !important; /* 반투명 흰색 */
+        backdrop-filter: blur(6px) !important;            /* 뒤 배경 흐림 효과 */
         -webkit-backdrop-filter: blur(12px) !important;
         border-radius: 20px !important;                     /* 모서리 둥글게 */
         padding: 2.2rem 2rem 2rem 2rem !important;
