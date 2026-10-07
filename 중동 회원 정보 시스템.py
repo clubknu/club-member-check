@@ -29,21 +29,20 @@ if os.path.exists(bg_image_path):
     mime_type, _ = mimetypes.guess_type(bg_image_path)
     mime_type = mime_type or "image/png"
 
-    # 전체 페이지 기본 배경을 흰색(#ffffff)으로 고정하고, 이미지 영역 설정
+    # 이미지 배경 스타일 (흰색 배경 위에 이미지 배치)
     bg_css = f"""
     <style>
-    /* 전체 배경(양옆 검은색 부분 포함)을 흰색으로 고정 */
-    html, body, [data-testid="stAppViewContainer"] {{
+    /* 전체 배경을 흰색으로 설정 */
+    html, body, [data-testid="stAppViewContainer"], .stApp {{
         background-color: #ffffff !important;
     }}
     
     .stApp {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}");
-        background-size: contain; /* 이미지 비율에 맞춰 잘리지 않게 표시 */
+        background-size: contain; /* 이미지 비율 유지 */
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-        background-color: #ffffff !important;
     }}
     </style>
     """
@@ -70,12 +69,12 @@ st.markdown(
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* 전체 폰트 및 라벨/텍스트 기본 색상을 진한 검은색으로 고정 */
+    /* 전체 폰트 설정 */
     .stApp {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     
-    /* 입력창 라벨(학번, 이름/성명) 글씨색을 진한 검은색(#0f172a)으로 변경 */
+    /* 입력창 라벨(학번, 이름/성명) 글씨색을 진한 검은색(#0f172a)으로 선명하게 고정 */
     [data-testid="stWidgetLabel"] label, 
     [data-testid="stWidgetLabel"] p {
         color: #0f172a !important;
