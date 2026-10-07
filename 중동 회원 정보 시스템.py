@@ -206,4 +206,68 @@ st.markdown(
     """
 <div class="main-header">
     <h1>🎓 중앙동아리 회원 조회</h1>
-    <p>학번과 이름을 입력
+    <p>학번과 이름을 입력하여 중앙동아리 회원 인증을 하세요.</p>
+</div>
+""",
+    unsafe_allow_html=True,
+)
+
+# 7. 메인 조회 폼
+df, error_msg = load_data()
+
+if error_msg:
+    st.error(f"⚠️ 데이터 로드 실패: {error_msg}")
+else:
+    name_column = None
+    if "성명" in df.columns:
+        name_column = "성명"
+    elif "이름" in df.columns:
+        name_column = "이름"
+
+    id_column = "학번" if "학번" in df.columns else None
+
+    if not name_column or not id_column:
+        st.error(
+            f"⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 포함되어 있어야 합니다. (현재 열 목록: {list(df.columns)})"
+        )
+    else:
+        with st.container(border=True):
+            student_id = st.text_input(
+                "학번", placeholder="예: 202412345", key="id_input"
+            )
+            name = st.text_input(
+                "이름 / 성명", placeholder="예: 홍길동", key="name_input"
+            )
+            search_btn = st.button("인증하기")
+
+        if search_btn:
+            if not student_id.strip() or not name.strip():
+                st.warning("학번과 이름을 모두 입력해 주세요.")
+            else:
+                match = df[
+                    (df[id_column].astype(str).str.strip() == student_id.strip())
+                    & (df[name_column].astype(str).str.strip() == name.strip())
+                ]
+
+                if not match.empty:
+                    st.markdown(
+                        f"""
+                    <div class="result-card-success">
+                        <span class="badge-success">✓ 인증 완료</span>
+                        <div class="result-title">{name.strip()} ({student_id.strip()}) 님</div>
+                        <div class="result-desc">2026학년도 2학기 중앙동아리 <b>회원</b>으로 등록되어 있습니다.</div>
+                    </div>
+                    """,
+                        unsafe_allow_html=True,
+                    )
+                else:
+                    st.markdown(
+                        f"""
+                    <div class="result-card-error">
+                        <span class="badge-error">✕ 조회 불가</span>
+                        <div class="result-title">중앙동아리 회원이 아닙니다</div>
+                        <div class="result-desc">입력하신 학번(<b>{student_id.strip()}</b>)과 이름(<b>{name.strip()}</b>)을 다시 확인해 주세요.</div>
+                    </div>
+                    """,
+                        unsafe_allow_html=True,
+                    )
