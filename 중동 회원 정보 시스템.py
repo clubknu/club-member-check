@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import streamlit as st
 
-# 1. 페이지 기본 설정 (가장 상단에 위치해야 합니다)
+# 1. 페이지 기본 설정 (가장 상단에 위치)
 st.set_page_config(
     page_title="중앙동아리 회원 정보 조회",
     page_icon="🎓",
@@ -22,7 +22,7 @@ def get_base64_of_bin_file(bin_file):
 
 # 3. bg.png 파일 경로 및 CSS 구성
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-bg_image_path = os.path.join(BASE_DIR, "bg.png")  # bg.png 로 변경
+bg_image_path = os.path.join(BASE_DIR, "bg.png")
 
 if os.path.exists(bg_image_path):
     bg_img_base64 = get_base64_of_bin_file(bg_image_path)
@@ -30,15 +30,17 @@ if os.path.exists(bg_image_path):
     mime_type = mime_type or "image/png"
 
     # 이미지 배경 스타일
- bg_css = f"""
+    # background-size: cover (꽉 채우기) 대신 80% 또는 contain으로 사진 크기를 조절할 수 있습니다.
+    bg_css = f"""
     <style>
     .stApp {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}");
-        background-size: contain; /* cover 대신 contain 적용 */
+        background-size: cover; /* 사진 전체를 화면에 맞추려면 contain으로 변경 가능 */
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
     }}
+    /* 내부 컨테이너 투명화 */
     [data-testid="stAppViewContainer"] {{
         background-color: rgba(0, 0, 0, 0) !important;
     }}
@@ -93,8 +95,8 @@ st.markdown(
     
     /* 카드 컨테이너 스타일 */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background: rgba(255, 255, 255, 0.92); /* 배경 이미지가 살짝 비치도록 약간의 투명도 부여 */
-        backdrop-filter: blur(10px); /* 글래스모피즘 효과 */
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(10px);
         padding: 1.5rem;
         border-radius: 16px !important;
         box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
