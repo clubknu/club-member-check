@@ -39,7 +39,7 @@ if os.path.exists(bg_image_path):
     /* 2. 메인 스크롤 영역에 이미지 배경 적용 및 배경색 투명화 */
     [data-testid="stMain"] {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}") !important;
-        background-size: contain !important; /* 이미지 크기 조절: cover 또는 contain */
+        background-size: 500px !important; /* 이미지 크기 조절: cover 또는 contain */
         background-position: center center !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
