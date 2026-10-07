@@ -100,7 +100,7 @@ st.markdown(
     [data-testid="stForm"] {
         background: rgba(255, 255, 255, 0.5) !important;
         backdrop-filter: blur(4px) !important;
-        -webkit-backdrop-filter: blur(4px) !important;
+        -webkit-backdrop-filter: blur(2px) !important;
         border-radius: 24px !important;
         padding: 2.5rem 2.2rem 2.2rem 2.2rem !important;
         
