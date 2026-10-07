@@ -66,7 +66,7 @@ else:
 
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. 이미지 맞춤형 팝업 카드 및 UI 스타일 CSS
+# 4. UI 스타일 및 박스 제거/버튼 정렬 CSS
 st.markdown(
     """
 <style>
@@ -74,6 +74,17 @@ st.markdown(
     [data-testid="stHeader"], #MainMenu, footer, header {
         visibility: hidden !important;
         height: 0px !important;
+    }
+
+    /* 📌 입력창 클릭 시 나타나는 우측 하단 "Press Enter to submit form" 박스 제거 */
+    [data-testid="InputInstructions"], 
+    div[data-testid="InputInstructions"],
+    small[data-testid="InputInstructions"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        width: 0 !important;
+        height: 0 !important;
     }
 
     /* 중앙 배치 컨테이너 크기 및 마진 설정 */
@@ -95,15 +106,6 @@ st.markdown(
         
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
         border: 1px solid rgba(255, 255, 255, 0.9) !important;
-
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-
-    [data-testid="stForm"] > div {
-        width: 100% !important;
     }
 
     /* 타이틀 디자인 */
@@ -133,7 +135,7 @@ st.markdown(
         font-size: 1.05rem !important;
         padding: 10px 12px !important;
         text-align: center !important;
-        -webkit-text-fill-color: #000000 !important; /* Safari/Chrome 글자색 강제 고정 */
+        -webkit-text-fill-color: #000000 !important;
     }
 
     div[data-baseweb="input"] input::placeholder,
@@ -144,20 +146,17 @@ st.markdown(
         -webkit-text-fill-color: #555555 !important;
     }
 
-    /* 버튼 완전 중앙 정렬 및 크기(35%) 설정 */
+    /* 버튼 스타일 및 완전 가운데 정렬 */
     div[data-testid="stFormSubmitButton"] {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         width: 100% !important;
-        margin-top: 1rem !important;
+        margin-top: 0.5rem !important;
     }
     
     div[data-testid="stFormSubmitButton"] > button {
-        width: 35% !important;
-        min-width: 120px !important;
-        margin: 0 auto !important; /* 중앙 배치 */
-        display: block !important;
+        width: 100% !important;
         background-color: #007bff !important;
         color: #ffffff !important;
         border: none !important;
@@ -217,7 +216,9 @@ with st.form("student_search_form", clear_on_submit=False):
 
     if error_msg:
         st.error(f"⚠️ {error_msg}")
-        search_btn = st.form_submit_button("조회하기")
+        _, col2, _ = st.columns([1, 1.2, 1])
+        with col2:
+            search_btn = st.form_submit_button("조회하기")
     else:
         name_column = None
         if "성명" in df.columns:
@@ -231,7 +232,9 @@ with st.form("student_search_form", clear_on_submit=False):
             st.error(
                 "⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 필요합니다."
             )
-            search_btn = st.form_submit_button("조회하기")
+            _, col2, _ = st.columns([1, 1.2, 1])
+            with col2:
+                search_btn = st.form_submit_button("조회하기")
         else:
             # 1. 이름 입력 (상단)
             name = st.text_input(
@@ -242,8 +245,10 @@ with st.form("student_search_form", clear_on_submit=False):
                 "학번", placeholder="학번 입력", label_visibility="collapsed"
             )
 
-            # 조회하기 버튼
-            search_btn = st.form_submit_button("조회하기")
+            # 컬럼을 분할하여 가운데 컬럼(col2)에 버튼 배치 -> 완전한 중앙 정렬
+            _, col2, _ = st.columns([1, 1.2, 1])
+            with col2:
+                search_btn = st.form_submit_button("조회하기")
 
             # 조회 로직 및 결과 출력
             if search_btn:
