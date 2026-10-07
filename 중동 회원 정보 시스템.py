@@ -36,7 +36,7 @@ if os.path.exists(bg_image_path):
     }}
     [data-testid="stMain"] {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}") !important;
-        background-size: 680px !important;
+        background-size: 750px !important;
         background-position: center center !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
@@ -98,8 +98,8 @@ st.markdown(
 
     /* 반투명 팝업 카드 설정 */
     [data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.75) !important;
-        backdrop-filter: blur(4px) !important;
+        background: rgba(255, 255, 255, 0.60) !important;
+        backdrop-filter: blur(2px) !important;
         -webkit-backdrop-filter: blur(4px) !important;
         border-radius: 24px !important;
         padding: 2.5rem 2.2rem 2.2rem 2.2rem !important;
