@@ -146,7 +146,7 @@ st.markdown(
         -webkit-text-fill-color: #555555 !important;
     }
 
-    /* 📌 조회하기 버튼 완벽 정중앙 배치 & 폭 조절 */
+    /* 📌 버튼 영역 전체 중앙 정렬 제어 */
     div[data-testid="stFormSubmitButton"] {
         display: flex !important;
         justify-content: center !important;
@@ -154,11 +154,18 @@ st.markdown(
         width: 100% !important;
         margin-top: 1rem !important;
     }
+
+    div[data-testid="stFormSubmitButton"] > div {
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+    }
     
-    div[data-testid="stFormSubmitButton"] > button {
-        width: 35% !important;                 /* 입력창 대비 적절한 버튼 너비 */
-        min-width: 130px !important;           /* 최소 너비 지정 */
-        margin: 0 auto !important;             /* 정중앙 고정 */
+    div[data-testid="stFormSubmitButton"] button {
+        width: 35% !important;                 /* 입력창 너비 대비 35% 비율 */
+        min-width: 130px !important;           /* 최소 너비 */
+        margin-left: auto !important;          /* 좌우 마진 auto로 강제 중앙 */
+        margin-right: auto !important;
         display: block !important;
         background-color: #007bff !important;
         color: #ffffff !important;
@@ -172,7 +179,7 @@ st.markdown(
         cursor: pointer !important;
     }
 
-    div[data-testid="stFormSubmitButton"] > button:hover {
+    div[data-testid="stFormSubmitButton"] button:hover {
         background-color: #0056b3 !important;
         color: #ffffff !important;
     }
@@ -245,7 +252,7 @@ with st.form("student_search_form", clear_on_submit=False):
                 "학번", placeholder="학번 입력", label_visibility="collapsed"
             )
 
-            # 3. 조회하기 버튼 (컬럼 분할 없이 직접 생성 후 CSS로 정중앙 정렬)
+            # 3. 조회하기 버튼
             search_btn = st.form_submit_button("조회하기")
 
             # 조회 로직 및 결과 출력
