@@ -216,7 +216,7 @@ with st.form("student_search_form", clear_on_submit=False):
 
     if error_msg:
         st.error(f"⚠️ {error_msg}")
-        _, col2, _ = st.columns([1, 1.2, 1])
+        _, col2, _ = st.columns([1, 2, 1])
         with col2:
             search_btn = st.form_submit_button("조회하기")
     else:
@@ -232,7 +232,7 @@ with st.form("student_search_form", clear_on_submit=False):
             st.error(
                 "⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 필요합니다."
             )
-            _, col2, _ = st.columns([1, 1.2, 1])
+            _, col2, _ = st.columns([1, 2, 1])
             with col2:
                 search_btn = st.form_submit_button("조회하기")
         else:
@@ -246,7 +246,7 @@ with st.form("student_search_form", clear_on_submit=False):
             )
 
             # 컬럼을 분할하여 가운데 컬럼(col2)에 버튼 배치 -> 완전한 중앙 정렬
-            _, col2, _ = st.columns([1, 1.2, 1])
+            _, col2, _ = st.columns([1, 2, 1])
             with col2:
                 search_btn = st.form_submit_button("조회하기")
 
