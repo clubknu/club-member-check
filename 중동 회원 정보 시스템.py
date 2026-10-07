@@ -146,19 +146,8 @@ st.markdown(
         -webkit-text-fill-color: #555555 !important;
     }
 
-    /* 📌 실제 Streamlit Submit 버튼 전체를 100% 폭으로 만든 뒤 내용물을 중앙 정렬 */
-    div[data-testid="stFormSubmitButton"] {
-        display: block !important;
-        width: 100% !important;
-        text-align: center !important;
-        margin-top: 1rem !important;
-    }
-
-    div[data-testid="stFormSubmitButton"] > button {
-        display: inline-block !important;
-        width: 38% !important;
-        min-width: 120px !important;
-        margin: 0 auto !important;
+    /* 📌 파란색 조회하기 버튼 커스텀 스타일링 */
+    div[data-testid="stFormSubmitButton"] button {
         background-color: #007bff !important;
         color: #ffffff !important;
         border: none !important;
@@ -169,9 +158,10 @@ st.markdown(
         box-shadow: none !important;
         text-align: center !important;
         cursor: pointer !important;
+        width: 100% !important;
     }
 
-    div[data-testid="stFormSubmitButton"] > button:hover {
+    div[data-testid="stFormSubmitButton"] button:hover {
         background-color: #0056b3 !important;
         color: #ffffff !important;
     }
@@ -219,7 +209,9 @@ with st.form("student_search_form", clear_on_submit=False):
 
     if error_msg:
         st.error(f"⚠️ {error_msg}")
-        search_btn = st.form_submit_button("조회하기")
+        _, btn_col, _ = st.columns([1, 1.2, 1])
+        with btn_col:
+            search_btn = st.form_submit_button("조회하기", use_container_width=True)
     else:
         name_column = None
         if "성명" in df.columns:
@@ -233,7 +225,9 @@ with st.form("student_search_form", clear_on_submit=False):
             st.error(
                 "⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 필요합니다."
             )
-            search_btn = st.form_submit_button("조회하기")
+            _, btn_col, _ = st.columns([1, 1.2, 1])
+            with btn_col:
+                search_btn = st.form_submit_button("조회하기", use_container_width=True)
         else:
             # 1. 이름 입력 (상단)
             name = st.text_input(
@@ -244,8 +238,10 @@ with st.form("student_search_form", clear_on_submit=False):
                 "학번", placeholder="학번 입력", label_visibility="collapsed"
             )
 
-            # 3. 조회하기 버튼
-            search_btn = st.form_submit_button("조회하기")
+            # 📌 3. 좌/우에 동일한 여백 컬럼을 두고, 가운데 컬럼(btn_col)에 버튼을 넣고 use_container_width=True 부여
+            _, btn_col, _ = st.columns([1, 1.2, 1])
+            with btn_col:
+                search_btn = st.form_submit_button("조회하기", use_container_width=True)
 
             # 조회 로직 및 결과 출력
             if search_btn:
