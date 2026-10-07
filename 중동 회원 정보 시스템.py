@@ -30,7 +30,7 @@ if os.path.exists(bg_image_path):
     mime_type = mime_type or "image/png"
 
     # 이미지 배경 스타일
-bg_css = f"""
+ bg_css = f"""
     <style>
     .stApp {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}");
