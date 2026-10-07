@@ -31,22 +31,17 @@ if os.path.exists(bg_image_path):
 
     bg_css = f"""
     <style>
-    /* 1. 최상위 앱 컨테이너 배경을 흰색으로 고정 */
     [data-testid="stAppViewContainer"] {{
         background-color: #ffffff !important;
     }}
-
-    /* 2. 메인 스크롤 영역에 이미지 배경 적용 및 배경색 투명화 */
     [data-testid="stMain"] {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}") !important;
-        background-size: 750px !important; /* 이미지 크기 조절: cover 또는 contain */
+        background-size: 750px !important;
         background-position: center center !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
         background-color: transparent !important;
     }}
-
-    /* 3. 내부 블록 배경 투명화 */
     [data-testid="stVerticalBlock"] {{
         background-color: transparent !important;
     }}
@@ -63,11 +58,11 @@ else:
 
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. 공통 커스텀 UI 및 텍스트 색상 CSS
+# 4. 공통 커스텀 UI 및 텍스트/버튼 크기 CSS
 st.markdown(
     """
 <style>
-    /* 상단 헤더 투명화 및 UI 구성요소 정리 */
+    /* 상단 헤더 및 필요없는 UI 가리기 */
     [data-testid="stHeader"] {
         background-color: rgba(0,0,0,0) !important;
     }
@@ -80,60 +75,51 @@ st.markdown(
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     
-    /* 입력창 라벨(학번, 이름/성명) 글씨색을 진한 검은색(#0f172a)으로 선명하게 고정 */
+    /* 입력창 라벨(학번, 이름/성명) 크기 확대 */
     [data-testid="stWidgetLabel"] label, 
     [data-testid="stWidgetLabel"] p {
         color: #0f172a !important;
         font-weight: 700 !important;
-        font-size: 1rem !important;
+        font-size: 1.25rem !important; /* 글자 크기 상향 */
     }
 
-    /* 메인 타이틀 영역 */
+    /* 메인 타이틀 영역 (크기 2배 확대 & 위로 끌어올림) */
     .main-header {
         text-align: center;
-        padding: 2.5rem 0 1.5rem 0;
+        padding: 0.5rem 0 1rem 0; /* 위쪽 여백 축소로 위로 올림 */
+        margin-top: -1.5rem;
     }
     .main-header h1 {
         color: #0f172a !important;
-        font-size: 2.2rem;
-        font-weight: 800;
+        font-size: 3.8rem !important; /* 약 2배 확대 (기존 2.2rem) */
+        font-weight: 900;
         margin-bottom: 0.5rem;
-        letter-spacing: -0.025em;
+        letter-spacing: -0.03em;
+        line-height: 1.2;
     }
     .main-header p {
         color: #334155 !important;
-        font-size: 1.05rem;
+        font-size: 1.25rem !important; /* 부제목 크기 확대 */
         font-weight: 600;
     }
     
-    /* 카드 컨테이너 스타일 */
-    [data-testid="stVerticalBlockBorderWrapper"] {
-        background: rgba(255, 255, 255, 0.92);
-        backdrop-filter: blur(10px);
-        padding: 1.5rem;
-        border-radius: 16px !important;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(203, 213, 225, 0.8) !important;
-        margin-bottom: 1.5rem;
-    }
-    
-    /* 버튼 스타일 */
-    .stButton > button {
-        width: 100%;
+    /* 버튼 스타일 (너비 및 폰트 확대) */
+    div.stButton > button {
+        width: 100% !important;
         background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
         color: white !important;
         border: none;
-        padding: 0.75rem 1.5rem;
-        font-size: 1.1rem;
-        font-weight: 600;
-        border-radius: 10px;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        padding: 0.85rem 2rem;
+        font-size: 1.25rem !important; /* 버튼 글자 크기 증가 */
+        font-weight: 700;
+        border-radius: 12px;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
         transition: all 0.2s ease;
         margin-top: 1rem;
     }
-    .stButton > button:hover {
+    div.stButton > button:hover {
         background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
-        box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+        box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
         transform: translateY(-1px);
     }
     
@@ -158,31 +144,31 @@ st.markdown(
         display: inline-block;
         background-color: #16a34a;
         color: white;
-        padding: 0.35rem 1rem;
+        padding: 0.4rem 1.2rem;
         border-radius: 9999px;
         font-weight: 700;
-        font-size: 0.95rem;
+        font-size: 1.05rem;
         margin-bottom: 0.75rem;
     }
     .badge-error {
         display: inline-block;
         background-color: #dc2626;
         color: white;
-        padding: 0.35rem 1rem;
+        padding: 0.4rem 1.2rem;
         border-radius: 9999px;
         font-weight: 700;
-        font-size: 0.95rem;
+        font-size: 1.05rem;
         margin-bottom: 0.75rem;
     }
     .result-title {
-        font-size: 1.35rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: #0f172a;
         margin-bottom: 0.25rem;
     }
     .result-desc {
         color: #475569;
-        font-size: 0.95rem;
+        font-size: 1.05rem;
     }
 </style>
 """,
@@ -206,7 +192,7 @@ def load_data():
         return None, str(e)
 
 
-# 6. 헤더 영역
+# 6. 헤더 영역 (크기와 위치가 조정된 메인 제목)
 st.markdown(
     """
 <div class="main-header">
@@ -236,13 +222,15 @@ else:
             f"⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 포함되어 있어야 합니다. (현재 열 목록: {list(df.columns)})"
         )
     else:
-        with st.container(border=True):
-            student_id = st.text_input(
-                "학번", placeholder="예: 202412345", key="id_input"
-            )
-            name = st.text_input(
-                "이름 / 성명", placeholder="예: 홍길동", key="name_input"
-            )
+        # 입력 영역
+        student_id = st.text_input(
+            "학번", placeholder="예: 202412345", key="id_input"
+        )
+        name = st.text_input("이름 / 성명", placeholder="예: 홍길동", key="name_input")
+
+        # 버튼을 중앙 정렬하고 좌우로 2배 넓히기 위한 컬럼 배치
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
             search_btn = st.button("인증하기")
 
         if search_btn:
