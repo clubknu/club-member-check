@@ -1,33 +1,39 @@
+import base64
+import mimetypes
 import os
 import pandas as pd
 import streamlit as st
-import base64
 
 # 1. 페이지 기본 설정 (가장 상단에 위치해야 합니다)
 st.set_page_config(
     page_title="중앙동아리 회원 정보 조회",
     page_icon="🎓",
     layout="centered",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="collapsed",
 )
+
 
 # 2. 로컬 이미지를 base64로 변환하는 함수
 def get_base64_of_bin_file(bin_file):
-    with open(bin_file, 'rb') as f:
+    with open(bin_file, "rb") as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
-# 3. bg.jpg 파일 경로 및 CSS 구성
+
+# 3. bg.png 파일 경로 및 CSS 구성
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-bg_image_path = os.path.join(BASE_DIR, "bg.jpg")
+bg_image_path = os.path.join(BASE_DIR, "bg.png")  # bg.png 로 변경
 
 if os.path.exists(bg_image_path):
     bg_img_base64 = get_base64_of_bin_file(bg_image_path)
-    # 이미지 배경 스타일 (투명도 조절이 필요하면 overlay 추가 가능)
+    mime_type, _ = mimetypes.guess_type(bg_image_path)
+    mime_type = mime_type or "image/png"
+
+    # 이미지 배경 스타일
     bg_css = f"""
     <style>
     .stApp {{
-        background-image: url("data:image/jpeg;base64,{bg_img_base64}");
+        background-image: url("data:{mime_type};base64,{bg_img_base64}");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -40,7 +46,7 @@ if os.path.exists(bg_image_path):
     </style>
     """
 else:
-    # bg.jpg 파일이 없을 때 적용될 기본 단색 배경
+    # bg.png 파일이 없을 때 적용될 기본 단색 배경
     bg_css = """
     <style>
     .stApp {
@@ -52,8 +58,9 @@ else:
 # 배경 스타일 적용
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. 공통 커스텀 UI CSS (배경 관련 CSS와 분리)
-st.markdown("""
+# 4. 공통 커스텀 UI CSS
+st.markdown(
+    """
 <style>
     /* 상단 헤더 투명화 및 UI 구성요소 정리 */
     [data-testid="stHeader"] {
@@ -164,16 +171,19 @@ st.markdown("""
         font-size: 0.95rem;
     }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
+
 
 # 5. 데이터 로드 함수
 @st.cache_data
 def load_data():
     excel_path = os.path.join(BASE_DIR, "members.xlsx")
-    
+
     if not os.path.exists(excel_path):
         return None, "members.xlsx 파일을 찾을 수 없습니다."
-    
+
     try:
         df = pd.read_excel(excel_path)
         df.columns = df.columns.str.strip()
@@ -181,13 +191,17 @@ def load_data():
     except Exception as e:
         return None, str(e)
 
+
 # 6. 헤더 영역
-st.markdown("""
+st.markdown(
+    """
 <div class="main-header">
     <h1>🎓 중앙동아리 회원 조회</h1>
     <p>학번과 이름을 입력하여 중앙동아리 회원 인증을 하세요.</p>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # 7. 메인 조회 폼
 df, error_msg = load_data()
@@ -200,15 +214,21 @@ else:
         name_column = "성명"
     elif "이름" in df.columns:
         name_column = "이름"
-        
+
     id_column = "학번" if "학번" in df.columns else None
 
     if not name_column or not id_column:
-        st.error(f"⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 포함되어 있어야 합니다. (현재 열 목록: {list(df.columns)})")
+        st.error(
+            f"⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 포함되어 있어야 합니다. (현재 열 목록: {list(df.columns)})"
+        )
     else:
         with st.container(border=True):
-            student_id = st.text_input("학번", placeholder="예: 202412345", key="id_input")
-            name = st.text_input("이름 / 성명", placeholder="예: 홍길동", key="name_input")
+            student_id = st.text_input(
+                "학번", placeholder="예: 202412345", key="id_input"
+            )
+            name = st.text_input(
+                "이름 / 성명", placeholder="예: 홍길동", key="name_input"
+            )
             search_btn = st.button("인증하기")
 
         if search_btn:
@@ -221,18 +241,24 @@ else:
                 ]
 
                 if not match.empty:
-                    st.markdown(f"""
+                    st.markdown(
+                        f"""
                     <div class="result-card-success">
                         <span class="badge-success">✓ 인증 완료</span>
                         <div class="result-title">{name.strip()} ({student_id.strip()}) 님</div>
                         <div class="result-desc">2026학년도 2학기 중앙동아리 <b>회원</b>으로 등록되어 있습니다.</div>
                     </div>
-                    """, unsafe_allow_html=True)
+                    """,
+                        unsafe_allow_html=True,
+                    )
                 else:
-                    st.markdown(f"""
+                    st.markdown(
+                        f"""
                     <div class="result-card-error">
                         <span class="badge-error">✕ 조회 불가</span>
                         <div class="result-title">중앙동아리 회원이 아닙니다</div>
                         <div class="result-desc">입력하신 학번(<b>{student_id.strip()}</b>)과 이름(<b>{name.strip()}</b>)을 다시 확인해 주세요.</div>
                     </div>
-                    """, unsafe_allow_html=True)
+                    """,
+                        unsafe_allow_html=True,
+                    )
