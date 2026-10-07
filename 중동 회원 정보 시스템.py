@@ -199,7 +199,7 @@ df, error_msg = load_data()
 with st.form("student_search_form", clear_on_submit=False):
     # 타이틀
     st.markdown(
-        '<div class="popup-title">학생 정보 조회</div>', unsafe_allow_html=True
+        '<div class="popup-title">중앙동아리 회원 정보 조회</div>', unsafe_allow_html=True
     )
 
     if error_msg:
