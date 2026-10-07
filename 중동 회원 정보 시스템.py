@@ -146,17 +146,19 @@ st.markdown(
         -webkit-text-fill-color: #555555 !important;
     }
 
-    /* 버튼 스타일 및 완전 가운데 정렬 */
-    div[data-testid="stFormSubmitButton"] {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        width: 200% !important;
-        margin-top: 1rem !important;
-    }
-    
-    div[data-testid="stFormSubmitButton"] > button {
-        width: 100% !important;
+    /* 버튼 컨테이너 정렬 설정 */
+div[data-testid="stFormSubmitButton"] {
+    display: flex !important;
+    justify-content: center !important; /* 버튼을 가로 가운데 정렬 */
+    align-items: center !important;
+    width: 100% !important;
+    margin-top: 0.5rem !important;      /* 입력창과의 상단 간격(여백) 조정 */
+}
+
+/* 버튼 자체의 크기 및 스타일 설정 */
+div[data-testid="stFormSubmitButton"] > button {
+    width: 100% !important;             /* col2 영역 안에서 채울 비율 */
+    margin: 0 auto !important;
         background-color: #007bff !important;
         color: #ffffff !important;
         border: none !important;
