@@ -55,7 +55,7 @@ else:
 
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. 카드 팝업 및 컴포넌트 커스텀 CSS
+# 4. 이미지 맞춤형 팝업 카드 및 UI 스타일 CSS
 st.markdown(
     """
 <style>
@@ -65,52 +65,53 @@ st.markdown(
         height: 0px !important;
     }
 
-    /* 중앙 배치 영역 너비 조정 및 여백 */
+    /* 중앙 배치 영역 너비 지정 */
     .main .block-container {
         max-width: 480px !important;
         padding-top: 5rem !important;
         padding-bottom: 3rem !important;
     }
 
-    /* 폼(st.form) 자체를 반투명 카드 팝업으로 변경 & 테두리 아웃라인 강화 */
+    /* 이미지 스타일의 반투명 팝업 카드 */
     [data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.75) !important; /* 반투명 흰색 */
-        backdrop-filter: blur(10px) !important;            /* 뒤 배경 흐림 효과 */
-        -webkit-backdrop-filter: blur(10px) !important;
-        border-radius: 20px !important;                     /* 모서리 둥글게 */
-        padding: 2.2rem 2rem 2rem 2rem !important;
+        background: rgba(255, 255, 255, 0.86) !important;  /* 반투명 흰색 */
+        backdrop-filter: blur(8px) !important;             /* 은은한 뒤 배경 투과 */
+        -webkit-backdrop-filter: blur(8px) !important;
+        border-radius: 24px !important;                     /* 모서리 둥글게 */
+        padding: 2.5rem 2.2rem 2.2rem 2.2rem !important;
         
-        /* 선명한 박스 윤곽선(아웃라인) 설정 */
-        border: 2px solid rgba(220, 225, 230, 0.9) !important; 
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
+        /* 입체적인 팝업 카드 그림자 & 깔끔한 테두리 */
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+        border: 1px solid rgba(255, 255, 255, 0.9) !important;
     }
 
-    /* 타이틀 스타일 */
+    /* 타이틀 디자인 */
     .popup-title {
         text-align: center;
-        font-size: 2rem;
+        font-size: 2.2rem;
         font-weight: 800;
         color: #000000;
-        margin-bottom: 1.8rem;
+        margin-bottom: 2rem;
         letter-spacing: -0.5px;
     }
 
-    /* 입력창 디자인 (흰색 배경 + 깔끔한 테두리) */
+    /* 입력창 디자인 (회색 테두리와 깔끔한 내부 padding) */
     div[data-baseweb="input"] {
         background-color: #ffffff !important;
-        border-radius: 6px !important;
-        border: 1px solid #767676 !important;
+        border-radius: 4px !important;
+        border: 1px solid #8e8e8e !important;
     }
     div[data-baseweb="input"] input {
         color: #000000 !important;
         background-color: #ffffff !important;
-        font-size: 1rem !important;
+        font-size: 1.05rem !important;
+        padding: 10px 12px !important;
     }
     div[data-baseweb="input"] input::placeholder {
         color: #757575 !important;
     }
 
-    /* 버튼 디자인 */
+    /* 원색 파란색 직사각형 버튼 디자인 */
     div[data-testid="stFormSubmitButton"] > button {
         width: 100% !important;
         background-color: #007bff !important;
@@ -118,9 +119,9 @@ st.markdown(
         border: none !important;
         padding: 0.75rem 0 !important;
         font-size: 1.1rem !important;
-        font-weight: 700 !important;
+        font-weight: 600 !important;
         border-radius: 4px !important;
-        margin-top: 0.5rem !important;
+        margin-top: 0.3rem !important;
         box-shadow: none !important;
     }
     div[data-testid="stFormSubmitButton"] > button:hover {
@@ -128,13 +129,14 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* 결과 텍스트 스타일 */
+    /* 결과 텍스트 디자인 (이미지상의 배치와 동일하게) */
     .result-box {
         text-align: center;
-        margin-top: 1.5rem;
-        font-size: 1.15rem;
+        margin-top: 1.8rem;
+        font-size: 1.25rem;
+        font-weight: 700;
         color: #000000;
-        line-height: 1.6;
+        line-height: 1.5;
     }
 </style>
 """,
@@ -158,7 +160,7 @@ def load_data():
         return None, str(e)
 
 
-# 6. st.form을 사용하여 타이틀, 입력창, 버튼을 하나의 반투명 팝업 카드로 결합
+# 6. st.form을 활용한 팝업 카드 렌더링
 df, error_msg = load_data()
 
 with st.form("student_search_form", clear_on_submit=False):
@@ -185,7 +187,7 @@ with st.form("student_search_form", clear_on_submit=False):
             )
             search_btn = st.form_submit_button("조회하기")
         else:
-            # 입력창 (라벨 숨기고 placeholder 지정)
+            # 입력창
             student_id = st.text_input(
                 "학번", placeholder="학번 입력", label_visibility="collapsed"
             )
@@ -196,7 +198,7 @@ with st.form("student_search_form", clear_on_submit=False):
             # 조회하기 버튼
             search_btn = st.form_submit_button("조회하기")
 
-            # 조회 로직 및 결과 출력 (팝업 카드 내부 하단에 출력)
+            # 조회 로직 및 결과 출력
             if search_btn:
                 if not student_id.strip() or not name.strip():
                     st.warning("학번과 이름을 모두 입력해 주세요.")
@@ -210,7 +212,7 @@ with st.form("student_search_form", clear_on_submit=False):
                         st.markdown(
                             f"""
                         <div class="result-box">
-                            <b>{name.strip()}</b>님은 중앙동아리회원입니다. 결과: <b>중앙동아리회원</b>
+                            {name.strip()}님은 중앙동아리회원입니다. 결과: 중앙동아리회원
                         </div>
                         """,
                             unsafe_allow_html=True,
@@ -219,7 +221,7 @@ with st.form("student_search_form", clear_on_submit=False):
                         st.markdown(
                             f"""
                         <div class="result-box" style="color: #d32f2f;">
-                            <b>{name.strip()}</b>님은 회원 목록에 존재하지 않습니다. 결과: <b>비회원</b>
+                            {name.strip()}님은 회원 목록에 존재하지 않습니다.<br>결과: 비회원
                         </div>
                         """,
                             unsafe_allow_html=True,
