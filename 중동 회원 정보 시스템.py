@@ -66,7 +66,7 @@ else:
 
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. UI 스타일 및 박스 제거/버튼 정렬 CSS
+# 4. UI 스타일 및 완벽 정중앙 버튼 정렬 CSS
 st.markdown(
     """
 <style>
@@ -76,7 +76,7 @@ st.markdown(
         height: 0px !important;
     }
 
-    /* 📌 입력창 클릭 시 나타나는 우측 하단 "Press Enter to submit form" 박스 제거 */
+    /* 입력창 클릭 시 우측 하단 "Press Enter to submit form" 박스 제거 */
     [data-testid="InputInstructions"], 
     div[data-testid="InputInstructions"],
     small[data-testid="InputInstructions"] {
@@ -118,7 +118,7 @@ st.markdown(
         letter-spacing: -0.5px;
     }
 
-    /* 입력창 강력 흰색 배경 & 검은색 글자 적용 */
+    /* 입력창 배경 하얀색 & 검은색 글자 적용 */
     div[data-baseweb="input"], 
     div[data-baseweb="base-input"],
     div[data-testid="stTextInput"] > div > div {
@@ -146,19 +146,20 @@ st.markdown(
         -webkit-text-fill-color: #555555 !important;
     }
 
-    /* 버튼 컨테이너 정렬 설정 */
-div[data-testid="stFormSubmitButton"] {
-    display: flex !important;
-    justify-content: center !important; /* 버튼을 가로 가운데 정렬 */
-    align-items: center !important;
-    width: 100% !important;
-    margin-top: 0.5rem !important;      /* 입력창과의 상단 간격(여백) 조정 */
-}
-
-/* 버튼 자체의 크기 및 스타일 설정 */
-div[data-testid="stFormSubmitButton"] > button {
-    width: 100% !important;             /* col2 영역 안에서 채울 비율 */
-    margin: 0 auto !important;
+    /* 📌 조회하기 버튼 완벽 정중앙 배치 & 폭 조절 */
+    div[data-testid="stFormSubmitButton"] {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin-top: 1rem !important;
+    }
+    
+    div[data-testid="stFormSubmitButton"] > button {
+        width: 35% !important;                 /* 입력창 대비 적절한 버튼 너비 */
+        min-width: 130px !important;           /* 최소 너비 지정 */
+        margin: 0 auto !important;             /* 정중앙 고정 */
+        display: block !important;
         background-color: #007bff !important;
         color: #ffffff !important;
         border: none !important;
@@ -168,6 +169,7 @@ div[data-testid="stFormSubmitButton"] > button {
         border-radius: 6px !important;
         box-shadow: none !important;
         text-align: center !important;
+        cursor: pointer !important;
     }
 
     div[data-testid="stFormSubmitButton"] > button:hover {
@@ -218,9 +220,7 @@ with st.form("student_search_form", clear_on_submit=False):
 
     if error_msg:
         st.error(f"⚠️ {error_msg}")
-        _, col2, _ = st.columns([1, 2, 1])
-        with col2:
-            search_btn = st.form_submit_button("조회하기")
+        search_btn = st.form_submit_button("조회하기")
     else:
         name_column = None
         if "성명" in df.columns:
@@ -234,9 +234,7 @@ with st.form("student_search_form", clear_on_submit=False):
             st.error(
                 "⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 필요합니다."
             )
-            _, col2, _ = st.columns([1, 2, 1])
-            with col2:
-                search_btn = st.form_submit_button("조회하기")
+            search_btn = st.form_submit_button("조회하기")
         else:
             # 1. 이름 입력 (상단)
             name = st.text_input(
@@ -247,10 +245,8 @@ with st.form("student_search_form", clear_on_submit=False):
                 "학번", placeholder="학번 입력", label_visibility="collapsed"
             )
 
-            # 컬럼을 분할하여 가운데 컬럼(col2)에 버튼 배치 -> 완전한 중앙 정렬
-            _, col2, _ = st.columns([1, 2, 1])
-            with col2:
-                search_btn = st.form_submit_button("조회하기")
+            # 3. 조회하기 버튼 (컬럼 분할 없이 직접 생성 후 CSS로 정중앙 정렬)
+            search_btn = st.form_submit_button("조회하기")
 
             # 조회 로직 및 결과 출력
             if search_btn:
