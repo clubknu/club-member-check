@@ -98,7 +98,7 @@ st.markdown(
 
     /* 반투명 팝업 카드 설정 */
     [data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.60) !important;
+        background: rgba(255, 255, 255, 0.75) !important;
         backdrop-filter: blur(2px) !important;
         -webkit-backdrop-filter: blur(4px) !important;
         border-radius: 24px !important;
