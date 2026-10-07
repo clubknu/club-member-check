@@ -29,20 +29,26 @@ if os.path.exists(bg_image_path):
     mime_type, _ = mimetypes.guess_type(bg_image_path)
     mime_type = mime_type or "image/png"
 
-    # 이미지 배경 스타일 (흰색 배경 위에 이미지 배치)
     bg_css = f"""
     <style>
-    /* 전체 배경을 흰색으로 설정 */
-    html, body, [data-testid="stAppViewContainer"], .stApp {{
+    /* 1. 최상위 앱 컨테이너 배경을 흰색으로 고정 */
+    [data-testid="stAppViewContainer"] {{
         background-color: #ffffff !important;
     }}
-    
-    .stApp {{
-        background-image: url("data:{mime_type};base64,{bg_img_base64}");
-        background-size: contain; /* 이미지 비율 유지 */
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
+
+    /* 2. 메인 스크롤 영역에 이미지 배경 적용 및 배경색 투명화 */
+    [data-testid="stMain"] {{
+        background-image: url("data:{mime_type};base64,{bg_img_base64}") !important;
+        background-size: contain !important; /* 이미지 크기 조절: cover 또는 contain */
+        background-position: center center !important;
+        background-repeat: no-repeat !important;
+        background-attachment: fixed !important;
+        background-color: transparent !important;
+    }}
+
+    /* 3. 내부 블록 배경 투명화 */
+    [data-testid="stVerticalBlock"] {{
+        background-color: transparent !important;
     }}
     </style>
     """
