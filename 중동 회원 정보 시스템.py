@@ -35,7 +35,7 @@ if os.path.exists(bg_image_path):
     <style>
     .stApp {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}");
-        background-size: cover; /* 사진 전체를 화면에 맞추려면 contain으로 변경 가능 */
+        background-size: contain; /* 사진 전체를 화면에 맞추려면 contain으로 변경 가능 */
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
