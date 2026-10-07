@@ -151,8 +151,8 @@ st.markdown(
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
-        width: 100% !important;
-        margin-top: 0.5rem !important;
+        width: 200% !important;
+        margin-top: 1rem !important;
     }
     
     div[data-testid="stFormSubmitButton"] > button {
