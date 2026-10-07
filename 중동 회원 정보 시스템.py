@@ -80,18 +80,18 @@ st.markdown(
     [data-testid="stWidgetLabel"] p {
         color: #0f172a !important;
         font-weight: 700 !important;
-        font-size: 1.25rem !important; /* 글자 크기 상향 */
+        font-size: 1.25rem !important;
     }
 
-    /* 메인 타이틀 영역 (크기 2배 확대 & 위로 끌어올림) */
+    /* 메인 타이틀 영역 (위 여백 2배 이상 더 축소) */
     .main-header {
         text-align: center;
-        padding: 0.5rem 0 1rem 0; /* 위쪽 여백 축소로 위로 올림 */
-        margin-top: -1.5rem;
+        padding: 0 0 1rem 0 !important; /* 상단 여백 제거 */
+        margin-top: -3.5rem !important; /* 타이틀을 상단으로 크게 이동 */
     }
     .main-header h1 {
         color: #0f172a !important;
-        font-size: 3.8rem !important; /* 약 2배 확대 (기존 2.2rem) */
+        font-size: 3.8rem !important;
         font-weight: 900;
         margin-bottom: 0.5rem;
         letter-spacing: -0.03em;
@@ -99,23 +99,31 @@ st.markdown(
     }
     .main-header p {
         color: #334155 !important;
-        font-size: 1.25rem !important; /* 부제목 크기 확대 */
+        font-size: 1.25rem !important;
         font-weight: 600;
     }
     
-    /* 버튼 스타일 (너비 및 폰트 확대) */
+    /* 버튼 스타일 (완벽 중앙 정렬 및 너비 조정) */
+    div.stButton {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
     div.stButton > button {
         width: 100% !important;
+        max-width: 100% !important;
+        display: block !important;
+        margin: 1rem auto 0 auto !important; /* 좌우 자동 여백으로 완전 중앙 정렬 */
         background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
         color: white !important;
         border: none;
         padding: 0.85rem 2rem;
-        font-size: 1.25rem !important; /* 버튼 글자 크기 증가 */
+        font-size: 1.25rem !important;
         font-weight: 700;
         border-radius: 12px;
         box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
         transition: all 0.2s ease;
-        margin-top: 1rem;
     }
     div.stButton > button:hover {
         background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
@@ -192,7 +200,7 @@ def load_data():
         return None, str(e)
 
 
-# 6. 헤더 영역 (크기와 위치가 조정된 메인 제목)
+# 6. 헤더 영역 (상단 여백이 대폭 축소된 타이틀)
 st.markdown(
     """
 <div class="main-header">
@@ -226,10 +234,10 @@ else:
         student_id = st.text_input(
             "학번", placeholder="예: 202412345", key="id_input"
         )
-        name = st.text_input("이름 / 성명", placeholder="예: 홍길동", key="name_input")
+        name = st.text_input("이름", placeholder="예: 홍길동", key="name_input")
 
-        # 버튼을 중앙 정렬하고 좌우로 2배 넓히기 위한 컬럼 배치
-        col1, col2, col3 = st.columns([1, 2, 1])
+        # 버튼 중앙 배치를 위한 레이아웃 (좌우 동일한 여백 15%, 중앙 70%)
+        col1, col2, col3 = st.columns([0.15, 0.7, 0.15])
         with col2:
             search_btn = st.button("인증하기")
 
