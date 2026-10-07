@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import streamlit as st
 
-# 1. 페이지 기본 설정 (가장 상단에 위치)
+# 1. 페이지 기본 설정
 st.set_page_config(
     page_title="중앙동아리 회원 정보 조회",
     page_icon="🎓",
@@ -29,37 +29,36 @@ if os.path.exists(bg_image_path):
     mime_type, _ = mimetypes.guess_type(bg_image_path)
     mime_type = mime_type or "image/png"
 
-    # 이미지 배경 스타일
-    # background-size: cover (꽉 채우기) 대신 80% 또는 contain으로 사진 크기를 조절할 수 있습니다.
+    # 전체 페이지 기본 배경을 흰색(#ffffff)으로 고정하고, 이미지 영역 설정
     bg_css = f"""
     <style>
+    /* 전체 배경(양옆 검은색 부분 포함)을 흰색으로 고정 */
+    html, body, [data-testid="stAppViewContainer"] {{
+        background-color: #ffffff !important;
+    }}
+    
     .stApp {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}");
-        background-size: contain; /* 사진 전체를 화면에 맞추려면 contain으로 변경 가능 */
+        background-size: contain; /* 이미지 비율에 맞춰 잘리지 않게 표시 */
         background-position: center;
         background-repeat: no-repeat;
         background-attachment: fixed;
-    }}
-    /* 내부 컨테이너 투명화 */
-    [data-testid="stAppViewContainer"] {{
-        background-color: rgba(0, 0, 0, 0) !important;
+        background-color: #ffffff !important;
     }}
     </style>
     """
 else:
-    # bg.png 파일이 없을 때 적용될 기본 단색 배경
     bg_css = """
     <style>
-    .stApp {
-        background-color: #f0f6ff;
+    html, body, .stApp {
+        background-color: #ffffff !important;
     }
     </style>
     """
 
-# 배경 스타일 적용
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. 공통 커스텀 UI CSS
+# 4. 공통 커스텀 UI 및 텍스트 색상 CSS
 st.markdown(
     """
 <style>
@@ -71,26 +70,35 @@ st.markdown(
     footer {visibility: hidden;}
     header {visibility: hidden;}
     
-    /* 전체 폰트 설정 */
+    /* 전체 폰트 및 라벨/텍스트 기본 색상을 진한 검은색으로 고정 */
     .stApp {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
     
+    /* 입력창 라벨(학번, 이름/성명) 글씨색을 진한 검은색(#0f172a)으로 변경 */
+    [data-testid="stWidgetLabel"] label, 
+    [data-testid="stWidgetLabel"] p {
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+    }
+
     /* 메인 타이틀 영역 */
     .main-header {
         text-align: center;
         padding: 2.5rem 0 1.5rem 0;
     }
     .main-header h1 {
-        color: #1e293b;
+        color: #0f172a !important;
         font-size: 2.2rem;
         font-weight: 800;
         margin-bottom: 0.5rem;
         letter-spacing: -0.025em;
     }
     .main-header p {
-        color: #64748b;
+        color: #334155 !important;
         font-size: 1.05rem;
+        font-weight: 600;
     }
     
     /* 카드 컨테이너 스타일 */
@@ -99,8 +107,8 @@ st.markdown(
         backdrop-filter: blur(10px);
         padding: 1.5rem;
         border-radius: 16px !important;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(226, 232, 240, 0.8) !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(203, 213, 225, 0.8) !important;
         margin-bottom: 1.5rem;
     }
     
@@ -108,7 +116,7 @@ st.markdown(
     .stButton > button {
         width: 100%;
         background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-        color: white;
+        color: white !important;
         border: none;
         padding: 0.75rem 1.5rem;
         font-size: 1.1rem;
@@ -198,68 +206,4 @@ st.markdown(
     """
 <div class="main-header">
     <h1>🎓 중앙동아리 회원 조회</h1>
-    <p>학번과 이름을 입력하여 중앙동아리 회원 인증을 하세요.</p>
-</div>
-""",
-    unsafe_allow_html=True,
-)
-
-# 7. 메인 조회 폼
-df, error_msg = load_data()
-
-if error_msg:
-    st.error(f"⚠️ 데이터 로드 실패: {error_msg}")
-else:
-    name_column = None
-    if "성명" in df.columns:
-        name_column = "성명"
-    elif "이름" in df.columns:
-        name_column = "이름"
-
-    id_column = "학번" if "학번" in df.columns else None
-
-    if not name_column or not id_column:
-        st.error(
-            f"⚠️ 엑셀 파일에 '학번' 및 '성명'(또는 '이름') 열이 포함되어 있어야 합니다. (현재 열 목록: {list(df.columns)})"
-        )
-    else:
-        with st.container(border=True):
-            student_id = st.text_input(
-                "학번", placeholder="예: 202412345", key="id_input"
-            )
-            name = st.text_input(
-                "이름 / 성명", placeholder="예: 홍길동", key="name_input"
-            )
-            search_btn = st.button("인증하기")
-
-        if search_btn:
-            if not student_id.strip() or not name.strip():
-                st.warning("학번과 이름을 모두 입력해 주세요.")
-            else:
-                match = df[
-                    (df[id_column].astype(str).str.strip() == student_id.strip())
-                    & (df[name_column].astype(str).str.strip() == name.strip())
-                ]
-
-                if not match.empty:
-                    st.markdown(
-                        f"""
-                    <div class="result-card-success">
-                        <span class="badge-success">✓ 인증 완료</span>
-                        <div class="result-title">{name.strip()} ({student_id.strip()}) 님</div>
-                        <div class="result-desc">2026학년도 2학기 중앙동아리 <b>회원</b>으로 등록되어 있습니다.</div>
-                    </div>
-                    """,
-                        unsafe_allow_html=True,
-                    )
-                else:
-                    st.markdown(
-                        f"""
-                    <div class="result-card-error">
-                        <span class="badge-error">✕ 조회 불가</span>
-                        <div class="result-title">중앙동아리 회원이 아닙니다</div>
-                        <div class="result-desc">입력하신 학번(<b>{student_id.strip()}</b>)과 이름(<b>{name.strip()}</b>)을 다시 확인해 주세요.</div>
-                    </div>
-                    """,
-                        unsafe_allow_html=True,
-                    )
+    <p>학번과 이름을 입력
