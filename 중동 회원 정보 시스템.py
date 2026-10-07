@@ -283,7 +283,7 @@ with st.form("student_search_form", clear_on_submit=False):
                         st.markdown(
                             f"""
                         <div class="result-box" style="color: #d32f2f !important;">
-                            일치하는 정보가 없습니다. 다시 확인해 주시길 바랍니다.
+                            일치하는 정보가 없습니다. 다시 확인해 주시기 바랍니다.
                         </div>
                         """,
                             unsafe_allow_html=True,
