@@ -98,8 +98,8 @@ st.markdown(
 
     /* 반투명 팝업 카드 설정 */
     [data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.75) !important;
-        backdrop-filter: blur(2px) !important;
+        background: rgba(255, 255, 255, 0.65) !important;
+        backdrop-filter: blur(4px) !important;
         -webkit-backdrop-filter: blur(4px) !important;
         border-radius: 24px !important;
         padding: 2.5rem 2.2rem 2.2rem 2.2rem !important;
