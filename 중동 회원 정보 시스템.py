@@ -72,15 +72,17 @@ st.markdown(
         padding-bottom: 3rem !important;
     }
 
-    /* 폼(st.form) 자체를 반투명 카드 팝업으로 변경 */
+    /* 폼(st.form) 자체를 반투명 카드 팝업으로 변경 & 테두리 아웃라인 강화 */
     [data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.7) !important; /* 반투명 흰색 */
-        backdrop-filter: blur(0px) !important;            /* 뒤 배경 흐림 효과 */
-        -webkit-backdrop-filter: blur(12px) !important;
+        background: rgba(255, 255, 255, 0.75) !important; /* 반투명 흰색 */
+        backdrop-filter: blur(10px) !important;            /* 뒤 배경 흐림 효과 */
+        -webkit-backdrop-filter: blur(10px) !important;
         border-radius: 20px !important;                     /* 모서리 둥글게 */
         padding: 2.2rem 2rem 2rem 2rem !important;
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15) !important; /* 은은한 팝업 그림자 */
-        border: 1px solid rgba(255, 255, 255, 0.8) !important;
+        
+        /* 선명한 박스 윤곽선(아웃라인) 설정 */
+        border: 2px solid rgba(220, 225, 230, 0.9) !important; 
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05) !important;
     }
 
     /* 타이틀 스타일 */
@@ -108,7 +110,7 @@ st.markdown(
         color: #757575 !important;
     }
 
-    /* 버튼 디자인 (첫 번째 첨부 사진과 동일한 원색 파란색 & 꽉 찬 너비) */
+    /* 버튼 디자인 */
     div[data-testid="stFormSubmitButton"] > button {
         width: 100% !important;
         background-color: #007bff !important;
