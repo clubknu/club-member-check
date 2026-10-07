@@ -42,7 +42,7 @@ if os.path.exists(bg_image_path):
         background-attachment: fixed !important;
         background-color: #ffffff !important;
         
-        /* 화면 세로 중앙 정렬을 위한 설정 */
+        /* 화면 세로 중앙 정렬 */
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -67,7 +67,7 @@ else:
 
 st.markdown(bg_css, unsafe_allow_html=True)
 
-# 4. 이미지 맞춤형 팝업 카드 및 정중앙 정렬 UI 스타일 CSS
+# 4. 이미지 맞춤형 팝업 카드 및 UI 스타일 CSS
 st.markdown(
     """
 <style>
@@ -86,26 +86,25 @@ st.markdown(
         margin: auto !important;
     }
 
-    /* 이미지 스타일의 반투명 팝업 카드 */
+    /* 반투명 팝업 카드 설정 */
     [data-testid="stForm"] {
         background: rgba(255, 255, 255, 0.7) !important;  /* 반투명 흰색 */
-        backdrop-filter: blur(1px) !important;             /* 은은한 뒤 배경 투과 */
+        backdrop-filter: blur(1px) !important;             /* 배경 투과 */
         -webkit-backdrop-filter: blur(8px) !important;
         border-radius: 24px !important;                     /* 모서리 둥글게 */
         padding: 2.5rem 2.2rem 2.2rem 2.2rem !important;
         
-        /* 입체적인 팝업 카드 그림자 & 깔끔한 테두리 */
+        /* 입체적 팝업 그림자 & 테두리 */
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.06) !important;
         border: 1px solid rgba(255, 255, 255, 0.9) !important;
 
-        /* 카드 내부 요소 중앙 정렬 */
+        /* 카드 내부 중앙 정렬 */
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
         justify-content: center !important;
     }
 
-    /* 카드 내부 모든 블록 요소 중앙 정렬 */
     [data-testid="stForm"] > div {
         width: 100% !important;
     }
@@ -120,39 +119,42 @@ st.markdown(
         letter-spacing: -0.5px;
     }
 
-    /* 입력창 디자인 (가운데 정렬 포함) */
+    /* 입력창 디자인 (하얀색 배경 + 검은색 글자 + 중앙 정렬) */
     div[data-baseweb="input"] {
         background-color: #ffffff !important;
         border-radius: 4px !important;
         border: 1px solid #8e8e8e !important;
     }
     div[data-baseweb="input"] input {
-        color: #000000 !important;
-        background-color: #ffffff !important;
+        color: #000000 !important;             /* 검은색 글자 */
+        background-color: #ffffff !important;  /* 하얀색 배경 */
         font-size: 1.05rem !important;
         padding: 10px 12px !important;
-        text-align: center !important; /* 입력 텍스트 중앙 정렬 */
+        text-align: center !important;         /* 텍스트 중앙 정렬 */
     }
     div[data-baseweb="input"] input::placeholder {
-        color: #757575 !important;
-        text-align: center !important; /* Placeholder 중앙 정렬 */
+        color: #000000 !important;             /* Placeholder 검은색 */
+        opacity: 0.6 !important;
+        text-align: center !important;
     }
 
-    /* 원색 파란색 직사각형 버튼 디자인 */
+    /* 파란색 버튼 디자인 (입력 칸의 1/3 크기 및 중앙 정렬) */
     div[data-testid="stFormSubmitButton"] {
         display: flex !important;
-        justify-content: center !important;
+        justify-content: center !important;    /* 버튼 중앙 정렬 */
+        width: 100% !important;
     }
     div[data-testid="stFormSubmitButton"] > button {
-        width: 100% !important;
+        width: 35% !important;                 /* 입력 칸 너비의 약 1/3 크기 */
+        min-width: 120px !important;
         background-color: #007bff !important;
         color: #ffffff !important;
         border: none !important;
-        padding: 0.75rem 0 !important;
-        font-size: 1.1rem !important;
+        padding: 0.65rem 0 !important;
+        font-size: 1.05rem !important;
         font-weight: 600 !important;
         border-radius: 4px !important;
-        margin-top: 0.3rem !important;
+        margin-top: 0.5rem !important;
         box-shadow: none !important;
         text-align: center !important;
     }
@@ -161,13 +163,13 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* 결과 텍스트 디자인 (중앙 정렬) */
+    /* 결과 및 경고 메시지 텍스트 디자인 (검은색 + 중앙 정렬) */
     .result-box {
         text-align: center !important;
         margin-top: 1.8rem;
         font-size: 1.25rem;
         font-weight: 700;
-        color: #000000;
+        color: #000000 !important;             /* 검은색 글씨 */
         line-height: 1.5;
         width: 100% !important;
     }
@@ -220,12 +222,13 @@ with st.form("student_search_form", clear_on_submit=False):
             )
             search_btn = st.form_submit_button("조회하기")
         else:
-            # 입력창
-            student_id = st.text_input(
-                "학번", placeholder="학번 입력", label_visibility="collapsed"
-            )
+            # 1. 이름 입력 (상단)
             name = st.text_input(
                 "이름", placeholder="이름 입력", label_visibility="collapsed"
+            )
+            # 2. 학번 입력 (하단)
+            student_id = st.text_input(
+                "학번", placeholder="학번 입력", label_visibility="collapsed"
             )
 
             # 조회하기 버튼
@@ -233,8 +236,16 @@ with st.form("student_search_form", clear_on_submit=False):
 
             # 조회 로직 및 결과 출력
             if search_btn:
+                # 입력값이 비어있을 때 (노란창 대신 검은색 텍스트 중앙 정렬)
                 if not student_id.strip() or not name.strip():
-                    st.warning("학번과 이름을 모두 입력해 주세요.")
+                    st.markdown(
+                        """
+                        <div class="result-box">
+                            학번과 이름을 모두 입력해 주세요.
+                        </div>
+                        """,
+                        unsafe_allow_html=True,
+                    )
                 else:
                     match = df[
                         (df[id_column].astype(str).str.strip() == student_id.strip())
@@ -253,8 +264,8 @@ with st.form("student_search_form", clear_on_submit=False):
                     else:
                         st.markdown(
                             f"""
-                        <div class="result-box" style="color: #d32f2f;">
-                            {name.strip()}님은 회원 목록에 존재하지 않습니다.<br>결과: 비회원
+                        <div class="result-box" style="color: #d32f2f !important;">
+                            {name.strip()}님은 중앙동아리 회원이 아닙니다.
                         </div>
                         """,
                             unsafe_allow_html=True,
