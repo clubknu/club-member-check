@@ -74,8 +74,8 @@ st.markdown(
 
     /* 이미지 스타일의 반투명 팝업 카드 */
     [data-testid="stForm"] {
-        background: rgba(255, 255, 255, 0.86) !important;  /* 반투명 흰색 */
-        backdrop-filter: blur(8px) !important;             /* 은은한 뒤 배경 투과 */
+        background: rgba(255, 255, 255, 0.7) !important;  /* 반투명 흰색 */
+        backdrop-filter: blur(1px) !important;             /* 은은한 뒤 배경 투과 */
         -webkit-backdrop-filter: blur(8px) !important;
         border-radius: 24px !important;                     /* 모서리 둥글게 */
         padding: 2.5rem 2.2rem 2.2rem 2.2rem !important;
