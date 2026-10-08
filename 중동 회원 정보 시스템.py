@@ -36,7 +36,7 @@ if os.path.exists(bg_image_path):
     }}
     [data-testid="stMain"] {{
         background-image: url("data:{mime_type};base64,{bg_img_base64}") !important;
-        background-size: 500px !important;
+        background-size: 750px !important;
         background-position: center center !important;
         background-repeat: no-repeat !important;
         background-attachment: fixed !important;
